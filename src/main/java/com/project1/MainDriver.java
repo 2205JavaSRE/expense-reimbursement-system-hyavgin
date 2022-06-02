@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import com.project1.dao.ReimbursmentDao;
 import com.project1.dao.ReimbursmentDaoImpl;
+import com.project1.models.Reimbursment;
 import com.project1.util.ConnectionFactory;
 
 public class MainDriver {
@@ -13,7 +14,7 @@ public class MainDriver {
 		Connection connection = ConnectionFactory.getConnection();
 		ReimbursmentDao reimDao = new ReimbursmentDaoImpl();
 		reimDao.allReimbursmentById();
-		reimDao.createNewReimbursment(null);
+		reimDao.createNewReimbursment(new Reimbursment(-1,"Engineering" , "havgin", "06/02/2022", 999.99, "Lodging", "Credit", null, "Education Travil hotel expenses"));
 		reimDao.employeLogin(null);
 		
 		
