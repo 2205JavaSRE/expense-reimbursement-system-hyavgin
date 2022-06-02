@@ -2,7 +2,9 @@ package com.project1.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.project1.models.Reimbursment;
@@ -45,8 +47,31 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 
 	@Override
 	public List<Reimbursment> allReimbursmentById() {
-		System.out.println("liste");
-		return null;
+		String sql = "select * from \"Project1\".reimbursement;";
+		Connection connection =ConnectionFactory.getConnection();
+		List<Reimbursment> reimbursmentList = new ArrayList<>();
+		
+		try(PreparedStatement ps = connection.prepareStatement(sql)) {
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Reimbursment r = new Reimbursment(rs.getInt("reimuserid"), rs.getString("department"), rs.getString("username"), rs.getString("reimbursment_date"),
+						rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_type"), rs.getString("payment_status"), rs.getString("description"));
+				
+				
+				reimbursmentList.add(r);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return reimbursmentList;
 	}
 
 }
