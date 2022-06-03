@@ -12,11 +12,11 @@ import com.project1.models.User;
 import com.project1.util.ConnectionFactory;
 
 public class ReimbursmentDaoImpl implements ReimbursmentDao {
-
+	private Connection connection = ConnectionFactory.getConnection();
 	@Override
 	public void createNewReimbursment(Reimbursment r) {
 		String sql = "INSERT INTO \"Project1\".Reimbursement (Department,username,Reimbursment_date,Tota_Cost, Expense_Type,Payment_Type,Description, reimuserid) values (?, ?, ?, ?, ?, ?, ?,(SELECT userid FROM \"Project1\".employee where username = ?));";
-		Connection connection = ConnectionFactory.getConnection();
+		
 		try(PreparedStatement ps = connection.prepareStatement(sql)) {
 			ps.setString(1,r.getDepartment());
 			ps.setString(2,r.getUsername());
@@ -26,12 +26,9 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 			ps.setString(6,r.getPaymentType());
 			ps.setString(7,r.getDescription());
 			ps.setString(8,r.getUsername());
-			
-			
-			
-			
+
 			ps.execute();
-			System.out.println("New request submitted");
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,15 +37,33 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 	}
 
 	@Override
-	public int employeLogin(User u) {
-		System.out.println("employelogin");
-		return 0;
+	public boolean employeLogin(User u) {
+		String sql = "SELECT * FROM \"Project1\".employee WHERE username = ? AND password = ? ;";
+		try(PreparedStatement ps = connection.prepareStatement(sql))  {
+			ps.setString(1, u.getUsername());
+			ps.setString(2, u.getPassword());
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				
+				//result found,means valid inputs
+				return true;
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Login error -->" + e.getMessage());
+			return false;
+		}
+		return false;
+
+		
 	}
 
 	@Override
 	public List<Reimbursment> allReimbursmentById() {
 		String sql = "select * from \"Project1\".reimbursement;";
-		Connection connection =ConnectionFactory.getConnection();
 		List<Reimbursment> reimbursmentList = new ArrayList<>();
 		
 		try(PreparedStatement ps = connection.prepareStatement(sql)) {

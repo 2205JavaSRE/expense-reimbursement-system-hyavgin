@@ -22,7 +22,7 @@ public class ReimbursmentService {
 		List<Reimbursment> reimbursmentList = rDao.allReimbursmentById();
 		
 		for(Reimbursment r : reimbursmentList) {
-			System.out.println("User Id :" + r.getUserid());
+			/*System.out.println("User Id :" + r.getUserid());
 			System.out.println("Username :" + r.getUsername());
 			System.out.println("Department :" + r.getDepartment());
 			System.out.println("Date :" + r.getDate());
@@ -30,13 +30,15 @@ public class ReimbursmentService {
 			System.out.println("Expense Type :" + r.getExpenseType());
 			System.out.println("Payment Type " + r.getPaymentType());
 			System.out.println("Pament Status :" + r.getPaymentStatus());
-			System.out.println("Description :" + r.getDescription());
+			System.out.println("Description :" + r.getDescription());*/
 		}
 		
 		
 		return reimbursmentList;
 		
 	}
+	
+	
 	
 
 }

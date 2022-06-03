@@ -9,7 +9,7 @@ public interface ReimbursmentDao {
 	
 	public void createNewReimbursment(Reimbursment r);
 	
-	public int employeLogin(User u);
+	public boolean employeLogin(User u);
 	
 	public List<Reimbursment> allReimbursmentById();
 	
