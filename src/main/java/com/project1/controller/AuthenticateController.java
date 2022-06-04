@@ -17,6 +17,7 @@ public class AuthenticateController {
 			User u = ctx.bodyAsClass(User.class);
 			
 			ctx.sessionAttribute("user",u);
+			
 			boolean access = AuthenticateService.authenticateUser(u.getUsername(), u.getPassword());
 			
 			if (access) {
@@ -33,6 +34,26 @@ public class AuthenticateController {
 	public static void logout(Context ctx) {
 		
 		ctx.consumeSessionAttribute("user");
+		
+	}
+	public static boolean sessionCheck(Context ctx) {
+		
+		User u = ctx.sessionAttribute("user");
+
+		boolean access = false ;
+		
+		if ( u == null) {
+			ctx.result("Wrong input or yo do not login yet!");
+			ctx.status(HttpCode.FORBIDDEN);
+			
+		}else {
+			access = AuthenticateService.authenticateUser(u.getUsername(), u.getPassword());
+			ctx.result("You have access");
+			ctx.status(HttpStatus.ACCEPTED_202);
+		}
+	
+	return access;
+		
 		
 	}
 

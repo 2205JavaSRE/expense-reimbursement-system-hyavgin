@@ -13,7 +13,9 @@ public interface ReimbursmentDao {
 	
 	public List<Reimbursment> allReimbursmentById();
 	
+	public List<Reimbursment> reimburstmentByUsername(String username);
 	
+	public List<Reimbursment> reimburstmentByUsernameandStatus(String username, String status);
 	
 	
 

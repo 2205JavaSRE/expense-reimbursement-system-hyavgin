@@ -14,7 +14,7 @@ public class MainDriver {
 	
 	public static void main(String[] args ) {
 		
-		Javalin app = Javalin.create().start(7111);
+		Javalin app = Javalin.create().start(7112);
 		
 		RequestMapper requestMapper = new RequestMapper();
 		requestMapper.configureRoutes(app);

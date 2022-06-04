@@ -10,12 +10,15 @@ public class RequestMapper {
 	
 	public void configureRoutes(Javalin app) {
 		
+		
 		app.post("/api/requestSubmit", ctx ->{
 			
-			if(AuthenticateController.authenticate(ctx)) {
-				
-				rController.requestSubmit(ctx);
-				
+			
+			
+			boolean access = AuthenticateController.sessionCheck(ctx);
+			
+			if(access) {
+				rController.requestSubmit(ctx);				
 			}else {
 				ctx.status(HttpCode.FORBIDDEN);
 			}
@@ -39,6 +42,22 @@ public class RequestMapper {
 			
 			AuthenticateController.logout(ctx);
 			
+		});
+		app.get("/session/secret", ctx ->{
+			
+			AuthenticateController.sessionCheck(ctx);
+			
+			
+		});
+		
+		app.get("/reimbutsement/{username}/{status}", ctx->{
+			
+			rController.statusCheck(ctx);
+		});
+		
+		app.get("/reimbutsement/{username}", ctx->{
+			
+			rController.usernameCheck(ctx);
 		});
 		
 	}
