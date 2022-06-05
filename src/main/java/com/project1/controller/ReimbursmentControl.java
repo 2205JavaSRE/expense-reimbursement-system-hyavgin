@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import com.project1.models.Manager;
 import com.project1.models.Reimbursment;
 import com.project1.models.User;
 import com.project1.service.ReimbursmentService;
@@ -24,7 +25,7 @@ public class ReimbursmentControl {
 		ctx.status(201);
 		ctx.status(HttpCode.CREATED);
 		ctx.result("New Reimbursement submitted by: " + jsonReimbursment.getUsername());
-		System.out.println("New Reimbursment Submitted by :" +jsonReimbursment.getUsername());
+		
 		
 		
 	}
@@ -57,11 +58,12 @@ public class ReimbursmentControl {
 			
 			String name = ctx.pathParam("username");
 			User u = ctx.sessionAttribute("user");
+			
 			if (u.getUsername().equals(name)) {
 				List<Reimbursment> reimbursmentListByUsername =rService.reimburstmentByUsername(name);
 				ctx.json(reimbursmentListByUsername);
 				ctx.status(HttpStatus.ACCEPTED_202);
-			}else {
+			}else{
 				ctx.result("you do not have access here");
 				ctx.status(HttpCode.FORBIDDEN);
 			}
@@ -69,6 +71,33 @@ public class ReimbursmentControl {
 		
 		
 	}
+	
+	public void managerCheck(Context ctx) {
+		
+		String uniqname = ctx.pathParam("uniqname");
+		
+		List<Reimbursment> reimbursmentListByUsername =rService.reimburstmentByUsername(uniqname);
+			ctx.json(reimbursmentListByUsername);
+			ctx.status(HttpStatus.ACCEPTED_202);
+
+	
+	
+	
+}	
+	public void managerStatusCheck(Context ctx) {
+	
+	String name = ctx.pathParam("username");
+	String status = ctx.pathParam("status");
+
+		List<Reimbursment> reimbursmentListByStatus =rService.reimburstmentByUsernameandStatus(name,status);
+		ctx.json(reimbursmentListByStatus);
+		ctx.status(HttpStatus.ACCEPTED_202);
+	
+	
+}
+	
+	
+	
 	public void paymentStatusUpdate(Context ctx) {
 		
 		Reimbursment jsonReimbursment =ctx.bodyAsClass(Reimbursment.class);

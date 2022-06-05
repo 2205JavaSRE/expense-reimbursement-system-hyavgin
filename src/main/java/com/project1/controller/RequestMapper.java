@@ -97,14 +97,14 @@ public class RequestMapper {
 		});
 		
 		
-		app.get("/reimbutsement/m/{username}/{status}", ctx->{
+		app.get("/manager/{username}/{status}", ctx->{
 			
 			
 			
 			boolean access = AuthenticateController.managerCheck(ctx);
 			
 			if(access) {
-				rController.statusCheck(ctx);
+				rController.managerStatusCheck(ctx);
 			}else {
 				ctx.status(HttpCode.FORBIDDEN);
 			}
@@ -113,12 +113,12 @@ public class RequestMapper {
 			
 		});
 		
-		app.get("/reimbutsement/m/{username}", ctx->{
+		app.get("/manager/{uniqname}", ctx->{
 			
 			boolean access = AuthenticateController.managerCheck(ctx);
-			
+			System.out.println(access);
 			if(access) {
-				rController.usernameCheck(ctx);
+				rController.managerCheck(ctx);
 			}else {
 				ctx.status(HttpCode.FORBIDDEN);
 			}
@@ -132,7 +132,6 @@ public class RequestMapper {
 			boolean access = AuthenticateController.managerCheck(ctx);
 	
 			if(access) {
-				System.out.println("execute without manager");
 				rController.paymentStatusUpdate(ctx);			
 			}else {
 				ctx.status(HttpCode.FORBIDDEN);

@@ -44,7 +44,7 @@ public class AuthenticateController {
 		boolean access = false ;
 		
 		if ( u == null) {
-			ctx.result("Wrong input or yo do not login yet!");
+			ctx.result("Wrong input or yo do not login user yet!");
 			ctx.status(HttpCode.FORBIDDEN);
 			
 		}else {
@@ -91,7 +91,7 @@ public class AuthenticateController {
 		boolean access = false ;
 		
 		if ( m == null) {
-			ctx.result("Wrong input or yo do not login yet!");
+			ctx.result("Please login as manager!");
 			ctx.status(HttpCode.FORBIDDEN);			
 		}else {
 			access = AuthenticateService.authenticateManger(m.getmUsername(), m.getmPassword());

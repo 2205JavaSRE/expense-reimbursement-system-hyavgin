@@ -53,7 +53,6 @@ public class ReimbursmentService {
 	public void paymentUpdate(int id, String Status) {
 		
 		rDao.paymentStatusuUpgrade(id, Status);
-		System.out.println("Upgraded");
 		
 	}
 
