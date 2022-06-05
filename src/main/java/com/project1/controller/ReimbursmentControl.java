@@ -107,6 +107,24 @@ public class ReimbursmentControl {
 		ctx.status(HttpStatus.ACCEPTED_202);
 	}
 	
+	public void allReimbursement(Context ctx) {
+		
+		List<Reimbursment> reimbursmentList = rService.allReimbursement();
+		
+		ctx.json(reimbursmentList);
+		
+	}
 	
+	public void allReimbursementByUsername(Context ctx) {
+		
+		
+		
+		String uniqname = ctx.pathParam("uniqname");
+		
+		List<Reimbursment> reimbursmentList = rService.reimburstmentAllByUsername(uniqname);
+		
+		ctx.json(reimbursmentList);
+		
+	}
 
 }

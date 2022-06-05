@@ -57,4 +57,30 @@ public class ReimbursmentService {
 	}
 
 
+	public List<Reimbursment> allReimbursement(){
+		
+		List<Reimbursment> reimbursmentList = rDao.allReimbursment();
+		
+		for(Reimbursment r : reimbursmentList) {
+		}
+		
+		
+		return reimbursmentList;
+		
+	}
+	
+	
+	public List<Reimbursment> reimburstmentAllByUsername(String username) {
+		
+		List<Reimbursment> reimbursmentListByUsername = rDao.reimburstmentAllByUsername(username);
+		
+		
+		
+		return reimbursmentListByUsername;
+		
+	}
+
+
+
+
 }

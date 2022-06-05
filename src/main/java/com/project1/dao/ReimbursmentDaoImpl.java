@@ -63,7 +63,7 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 
 	@Override
 	public List<Reimbursment> allReimbursmentById() {
-		String sql = "select * from \"Project1\".reimbursement;";
+		String sql = "SELECT * FROM \"Project1\".reimbursement WHERE payment_status = 'Pending';";
 		List<Reimbursment> reimbursmentList = new ArrayList<>();
 		
 		try(PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -87,7 +87,7 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 
 	@Override
 	public List<Reimbursment> reimburstmentByUsername(String username) {
-		String sql = "select * from \"Project1\".reimbursement where username = ?;";
+		String sql = "SELECT * FROM \"Project1\".reimbursement WHERE username = ? AND payment_status = 'Pending' ;";
 		List<Reimbursment> reimbursmentListByusername = new ArrayList<>();
 		
 		try(PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -116,7 +116,7 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 
 	@Override
 	public List<Reimbursment> reimburstmentByUsernameandStatus(String username, String status) {
-		String sql = "select * from \"Project1\".reimbursement where username = ? and payment_status = ? ";
+		String sql = "select * from \"Project1\".reimbursement where username = ? and payment_status = ?";
 		List<Reimbursment> reimbursmentListByusernameandStatus = new ArrayList<>();
 		
 		try(PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -181,6 +181,61 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 		}
 
 		
+	}
+
+	@Override
+	public List<Reimbursment> allReimbursment() {
+		String sql = "SELECT * FROM \"Project1\".reimbursement;";
+		List<Reimbursment> reimbursmentList = new ArrayList<>();
+		
+		try(PreparedStatement ps = connection.prepareStatement(sql)) {
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Reimbursment r = new Reimbursment(rs.getInt("reimbursementId"), rs.getInt("reimuserid"), rs.getString("username"),rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_status"));
+				
+				
+				reimbursmentList.add(r);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return reimbursmentList;
+	}
+
+
+	@Override
+	public List<Reimbursment> reimburstmentAllByUsername(String username) {
+		String sql = "SELECT * FROM \"Project1\".reimbursement WHERE username = ?;";
+		List<Reimbursment> reimbursmentListByusername = new ArrayList<>();
+		
+		try(PreparedStatement ps = connection.prepareStatement(sql)) {
+			
+			ps.setString(1,username);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Reimbursment r = new Reimbursment(rs.getInt("reimbursementId"), rs.getInt("reimuserid"), rs.getString("username"),rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_status"));
+
+				
+				reimbursmentListByusername.add(r);
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		// TODO Auto-generated method stub
+		return reimbursmentListByusername;
 	}
 
 }

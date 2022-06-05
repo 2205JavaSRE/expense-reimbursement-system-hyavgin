@@ -21,5 +21,9 @@ public interface ReimbursmentDao {
 	public boolean managerLogin(Manager m);
 	
 	public void paymentStatusuUpgrade(int id, String status);
+	
+	public List<Reimbursment> allReimbursment();
+	
+	public List<Reimbursment> reimburstmentAllByUsername(String username);
 
 }
