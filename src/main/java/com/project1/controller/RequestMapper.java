@@ -12,12 +12,11 @@ public class RequestMapper {
 		
 		
 		app.post("/api/requestSubmit", ctx ->{
-			
-			
-			
+
 			boolean access = AuthenticateController.sessionCheck(ctx);
-			
+	
 			if(access) {
+				System.out.println("execute without manager");
 				rController.requestSubmit(ctx);				
 			}else {
 				ctx.status(HttpCode.FORBIDDEN);
@@ -29,8 +28,14 @@ public class RequestMapper {
 		
 		app.get("/api/reimbursments",ctx->{
 			
-			rController.allReimbursment(ctx);
 			
+			boolean access = AuthenticateController.managerCheck(ctx);
+			
+			if(access) {
+				rController.allReimbursment(ctx);
+			}else {
+				ctx.status(HttpCode.FORBIDDEN);
+			}	
 		});
 		
 		app.post("/login", ctx->{
@@ -46,19 +51,83 @@ public class RequestMapper {
 		app.get("/session/secret", ctx ->{
 			
 			AuthenticateController.sessionCheck(ctx);
-			
-			
 		});
+		
 		
 		app.get("/reimbutsement/{username}/{status}", ctx->{
 			
-			rController.statusCheck(ctx);
+			
+			
+			boolean access = AuthenticateController.sessionCheck(ctx);
+			
+			if(access) {
+				rController.statusCheck(ctx);
+			}else {
+				ctx.status(HttpCode.FORBIDDEN);
+			}
+			
+			
+			
 		});
 		
 		app.get("/reimbutsement/{username}", ctx->{
 			
-			rController.usernameCheck(ctx);
+			boolean access = AuthenticateController.sessionCheck(ctx);
+			
+			if(access) {
+				rController.usernameCheck(ctx);
+			}else {
+				ctx.status(HttpCode.FORBIDDEN);
+			}
+			
+			
 		});
+		
+		
+		app.post("/mlogin", ctx -> {
+			
+			AuthenticateController.authenticateManager(ctx);
+
+		});
+		
+		app.get("/mlogout", ctx -> {
+			
+			AuthenticateController.logoutManager(ctx);
+
+		});
+		
+		
+		app.get("/reimbutsement/m/{username}/{status}", ctx->{
+			
+			
+			
+			boolean access = AuthenticateController.managerCheck(ctx);
+			
+			if(access) {
+				rController.statusCheck(ctx);
+			}else {
+				ctx.status(HttpCode.FORBIDDEN);
+			}
+			
+			
+			
+		});
+		
+		app.get("/reimbutsement/m/{username}", ctx->{
+			
+			boolean access = AuthenticateController.managerCheck(ctx);
+			
+			if(access) {
+				rController.usernameCheck(ctx);
+			}else {
+				ctx.status(HttpCode.FORBIDDEN);
+			}
+			
+			
+		});
+		
+		
+		
 		
 	}
 	

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project1.models.Manager;
 import com.project1.models.Reimbursment;
 import com.project1.models.User;
 import com.project1.util.ConnectionFactory;
@@ -147,6 +148,30 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 		
 		// TODO Auto-generated method stub
 		return reimbursmentListByusernameandStatus;
+	}
+
+	@Override
+	
+	public boolean managerLogin(Manager m) {
+		String sql = "SELECT * FROM \"Project1\".manager WHERE username = ? AND password = ? ;";
+		try(PreparedStatement ps = connection.prepareStatement(sql))  {
+			ps.setString(1, m.getmUsername());
+			ps.setString(2, m.getmPassword());
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				
+				//result found,means valid inputs
+				return true;
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			System.out.println("Login error -->" + e.getMessage());
+			return false;
+		}
+		return false;
 	}
 
 }

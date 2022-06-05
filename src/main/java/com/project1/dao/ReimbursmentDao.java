@@ -2,6 +2,7 @@ package com.project1.dao;
 
 import java.util.List;
 
+import com.project1.models.Manager;
 import com.project1.models.Reimbursment;
 import com.project1.models.User;
 
@@ -17,6 +18,6 @@ public interface ReimbursmentDao {
 	
 	public List<Reimbursment> reimburstmentByUsernameandStatus(String username, String status);
 	
-	
+	public boolean managerLogin(Manager m);
 
 }

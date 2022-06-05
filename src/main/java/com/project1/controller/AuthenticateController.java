@@ -2,6 +2,7 @@ package com.project1.controller;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import com.project1.models.Manager;
 import com.project1.models.User;
 import com.project1.service.AuthenticateService;
 
@@ -57,4 +58,48 @@ public class AuthenticateController {
 		
 	}
 
+	
+	public static boolean authenticateManager(Context ctx) {
+		
+		Manager m = ctx.bodyAsClass(Manager.class);
+		
+		ctx.sessionAttribute("manager",m);
+		
+		boolean access = AuthenticateService.authenticateManger(m.getmUsername(), m.getmPassword());
+		
+		if (access) {
+			ctx.result("You have access");
+			ctx.status(HttpStatus.ACCEPTED_202);
+		}else {
+			ctx.result("You do not have access");
+			ctx.status(HttpCode.FORBIDDEN);
+		}
+	
+	return access;
+}
+	
+	public static void logoutManager(Context ctx) {
+		
+		ctx.consumeSessionAttribute("manager");
+		
+	}
+	
+	public static boolean managerCheck(Context ctx) {
+
+		Manager m = ctx.sessionAttribute("manager");
+		
+		boolean access = false ;
+		
+		if ( m == null) {
+			ctx.result("Wrong input or yo do not login yet!");
+			ctx.status(HttpCode.FORBIDDEN);			
+		}else {
+			access = AuthenticateService.authenticateManger(m.getmUsername(), m.getmPassword());
+			ctx.result("You have access");
+			ctx.status(HttpStatus.ACCEPTED_202);
+		}
+	return access;
+		
+		
+	}
 }
