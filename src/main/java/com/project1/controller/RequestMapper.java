@@ -127,6 +127,22 @@ public class RequestMapper {
 		});
 		
 		
+		app.put("/api/paymentupdate", ctx ->{
+
+			boolean access = AuthenticateController.managerCheck(ctx);
+	
+			if(access) {
+				System.out.println("execute without manager");
+				rController.paymentStatusUpdate(ctx);			
+			}else {
+				ctx.status(HttpCode.FORBIDDEN);
+			}
+			
+			
+			
+		} );
+		
+		
 		
 		
 	}

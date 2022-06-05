@@ -19,8 +19,7 @@ public class ReimbursmentControl {
 		
 		Reimbursment jsonReimbursment =ctx.bodyAsClass(Reimbursment.class);
 		
-		rService.requestSubmit(jsonReimbursment.getDepartment(), jsonReimbursment.getUsername(), jsonReimbursment.getDate(), jsonReimbursment.getTotalCost(),
-				jsonReimbursment.getExpenseType() ,jsonReimbursment.getPaymentType() ,jsonReimbursment.getDescription());
+		rService.requestSubmit(jsonReimbursment.getUsername(), jsonReimbursment.getTotalCost(),jsonReimbursment.getExpenseType(),jsonReimbursment.getPaymentStatus());
 		
 		ctx.status(201);
 		ctx.status(HttpCode.CREATED);
@@ -70,6 +69,15 @@ public class ReimbursmentControl {
 		
 		
 	}
+	public void paymentStatusUpdate(Context ctx) {
+		
+		Reimbursment jsonReimbursment =ctx.bodyAsClass(Reimbursment.class);
+		
+		rService.paymentUpdate(jsonReimbursment.getReimbursementId(), jsonReimbursment.getPaymentStatus());
+		ctx.result("Payment Status Updated");
+		ctx.status(HttpStatus.ACCEPTED_202);
+	}
+	
 	
 
 }

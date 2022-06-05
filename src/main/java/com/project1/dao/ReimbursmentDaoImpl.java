@@ -18,17 +18,14 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 	
 	@Override
 	public void createNewReimbursment(Reimbursment r) {
-		String sql = "INSERT INTO \"Project1\".Reimbursement (Department,username,Reimbursment_date,Tota_Cost, Expense_Type,Payment_Type,Description, reimuserid) values (?, ?, ?, ?, ?, ?, ?,(SELECT userid FROM \"Project1\".employee where username = ?));";
+		String sql = "INSERT INTO \"Project1\".Reimbursement (username,Tota_Cost, Expense_Type, reimuserid) values (?, ?, ?,(SELECT userid FROM \"Project1\".employee where username = ?));";
 		
 		try(PreparedStatement ps = connection.prepareStatement(sql)) {
-			ps.setString(1,r.getDepartment());
-			ps.setString(2,r.getUsername());
-			ps.setString(3,r.getDate());
-			ps.setDouble(4,r.getTotalCost());
-			ps.setString(5,r.getExpenseType());
-			ps.setString(6,r.getPaymentType());
-			ps.setString(7,r.getDescription());
-			ps.setString(8,r.getUsername());
+			
+			ps.setString(1,r.getUsername());
+			ps.setDouble(2,r.getTotalCost());
+			ps.setString(3,r.getExpenseType());
+			ps.setString(4,r.getUsername());
 
 			ps.execute();
 			
@@ -73,8 +70,7 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				Reimbursment r = new Reimbursment(rs.getInt("reimuserid"), rs.getString("department"), rs.getString("username"), rs.getString("reimbursment_date"),
-						rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_type"), rs.getString("payment_status"), rs.getString("description"));
+				Reimbursment r = new Reimbursment(rs.getInt("reimbursementId"), rs.getInt("reimuserid"), rs.getString("username"),rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_status"));
 				
 				
 				reimbursmentList.add(r);
@@ -100,9 +96,8 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				Reimbursment r = new Reimbursment(rs.getInt("reimuserid"), rs.getString("department"), rs.getString("username"), rs.getString("reimbursment_date"),
-						rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_type"), rs.getString("payment_status"), rs.getString("description"));
-				
+				Reimbursment r = new Reimbursment(rs.getInt("reimbursementId"), rs.getInt("reimuserid"), rs.getString("username"),rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_status"));
+
 				
 				reimbursmentListByusername.add(r);
 				
@@ -131,10 +126,8 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				Reimbursment r = new Reimbursment(rs.getInt("reimuserid"), rs.getString("department"), rs.getString("username"), rs.getString("reimbursment_date"),
-						rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_type"), rs.getString("payment_status"), rs.getString("description"));
-				
-				
+				Reimbursment r = new Reimbursment(rs.getInt("reimbursementId"), rs.getInt("reimuserid"), rs.getString("username"),rs.getInt("tota_cost"), rs.getString("expense_type"), rs.getString("payment_status"));
+
 				reimbursmentListByusernameandStatus.add(r);
 				
 			}
@@ -172,6 +165,22 @@ public class ReimbursmentDaoImpl implements ReimbursmentDao {
 			return false;
 		}
 		return false;
+	}
+
+	@Override
+	public void paymentStatusuUpgrade(int id, String status) {
+		String sql = "update \"Project1\".Reimbursement  set payment_status  = ? where reimbursementid = ?;";
+		try(PreparedStatement ps = connection.prepareStatement(sql))  {
+			ps.setString(1, status);
+			ps.setInt(2, id);
+			ps.execute();
+
+
+		} catch (SQLException e) {
+			System.out.println("Login error -->" + e.getMessage());
+		}
+
+		
 	}
 
 }

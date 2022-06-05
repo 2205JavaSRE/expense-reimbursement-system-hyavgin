@@ -3,15 +3,13 @@ package com.project1.models;
 import java.util.Objects;
 
 public class Reimbursment {
+	
+	private int reimbursementId;
 	private int userid;
-	private String department;
 	private String username;
-	private String date; 
 	private double totalCost;
 	private String expenseType;
-	private String paymentType;
 	private String paymentStatus;
-	private String description;
 	
 	
 	public Reimbursment() {
@@ -20,18 +18,25 @@ public class Reimbursment {
 	}
 
 
-	public Reimbursment(int userid, String department, String username, String date, double totalCost,
-			String expenseType, String paymentType, String paymentStatus, String description) {
+	public Reimbursment(int reimbursementId, int userid, String username, double totalCost, String expenseType,
+			String paymentStatus) {
 		super();
+		this.reimbursementId = reimbursementId;
 		this.userid = userid;
-		this.department = department;
 		this.username = username;
-		this.date = date;
 		this.totalCost = totalCost;
 		this.expenseType = expenseType;
-		this.paymentType = paymentType;
 		this.paymentStatus = paymentStatus;
-		this.description = description;
+	}
+
+
+	public int getReimbursementId() {
+		return reimbursementId;
+	}
+
+
+	public void setReimbursementId(int reimbursementId) {
+		this.reimbursementId = reimbursementId;
 	}
 
 
@@ -45,16 +50,6 @@ public class Reimbursment {
 	}
 
 
-	public String getDepartment() {
-		return department;
-	}
-
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
-
 	public String getUsername() {
 		return username;
 	}
@@ -62,16 +57,6 @@ public class Reimbursment {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-
-	public String getDate() {
-		return date;
-	}
-
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 
@@ -95,16 +80,6 @@ public class Reimbursment {
 	}
 
 
-	public String getPaymentType() {
-		return paymentType;
-	}
-
-
-	public void setPaymentType(String paymentType) {
-		this.paymentType = paymentType;
-	}
-
-
 	public String getPaymentStatus() {
 		return paymentStatus;
 	}
@@ -115,20 +90,9 @@ public class Reimbursment {
 	}
 
 
-	public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, department, description, expenseType, paymentStatus, paymentType, totalCost, userid,
-				username);
+		return Objects.hash(expenseType, paymentStatus, reimbursementId, totalCost, userid, username);
 	}
 
 
@@ -141,9 +105,8 @@ public class Reimbursment {
 		if (getClass() != obj.getClass())
 			return false;
 		Reimbursment other = (Reimbursment) obj;
-		return Objects.equals(date, other.date) && Objects.equals(department, other.department)
-				&& Objects.equals(description, other.description) && Objects.equals(expenseType, other.expenseType)
-				&& Objects.equals(paymentStatus, other.paymentStatus) && Objects.equals(paymentType, other.paymentType)
+		return Objects.equals(expenseType, other.expenseType) && Objects.equals(paymentStatus, other.paymentStatus)
+				&& reimbursementId == other.reimbursementId
 				&& Double.doubleToLongBits(totalCost) == Double.doubleToLongBits(other.totalCost)
 				&& userid == other.userid && Objects.equals(username, other.username);
 	}
@@ -151,11 +114,12 @@ public class Reimbursment {
 
 	@Override
 	public String toString() {
-		return "Reimbursment [userid=" + userid + ", department=" + department + ", username=" + username + ", date="
-				+ date + ", totalCost=" + totalCost + ", expenseType=" + expenseType + ", paymentType=" + paymentType
-				+ ", paymentStatus=" + paymentStatus + ", description=" + description + "]";
+		return "Reimbursment [reimbursementId=" + reimbursementId + ", userid=" + userid + ", username=" + username
+				+ ", totalCost=" + totalCost + ", expenseType=" + expenseType + ", paymentStatus=" + paymentStatus
+				+ "]";
 	}
-	
+
+
 	
 	
 
