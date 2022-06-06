@@ -54,26 +54,30 @@
  	</dependencies>
 	<build>
 	<plugins>
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-shade-plugin</artifactId>
-    <executions>
-        <execution>
+	<plugin>
+    	<groupId>org.apache.maven.plugins</groupId>
+    	<artifactId>maven-assembly-plugin</artifactId>
+    		<executions>
+        	<execution>
+            <phase>package</phase>
             <goals>
-                <goal>shade</goal>
+                <goal>single</goal>
             </goals>
             <configuration>
-                <shadedArtifactAttached>true</shadedArtifactAttached>
-                <transformers>
-                    <transformer implementation=
-                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                        <mainClass>com.trying.Main.MainDriver</mainClass>
-                </transformer>
-            </transformers>
-        </configuration>
+                <archive>
+                    <manifest>
+                        <mainClass>
+                            com.project1.MainDriver
+                        </mainClass>
+                    </manifest>
+                </archive>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+            </configuration>
         </execution>
-    </executions>
-</plugin>
+    	</executions>
+	</plugin>
 	</plugins>
 	</build>
   
