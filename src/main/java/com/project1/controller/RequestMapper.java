@@ -33,14 +33,17 @@ public class RequestMapper {
 		new UptimeMetrics().bindTo(registry);
 		new ProcessorMetrics().bindTo(registry);
 		new DiskSpaceMetrics(new File(System.getProperty("user.dir"))).bindTo(registry);
+		//Counters for request_submit
+		Counter counter = Counter.builder("Path_request_submit").description("track number").tag("purpose", "request_submit").register(registry);
+		//Counters for request for reimbursement
+		Counter counter1 = Counter.builder("Path_request_reimbursement").description("track number").tag("purpose", "reimbursment").register(registry);
+		//Counters for request for login
+		Counter counter2 = Counter.builder("Path_request_login").description("track number").tag("purpose", "login").register(registry);
+		//Counters for request reimbursement control
+		Counter counter3 = Counter.builder("Path_request_check").description("track number").tag("purpose", "reimbursement_check").register(registry);
 		
-		Counter counter = Counter.builder("Path_request").description("track number").tag("purpose", "request_submit").register(registry);
-		Counter counter1 = Counter.builder("Path_request").description("track number").tag("purpose", "reimbursment").register(registry);
-		Counter counter2 = Counter.builder("Path_request").description("track number").tag("purpose", "login").register(registry);
-		Counter counter3 = Counter.builder("Path_request").description("track number").tag("purpose", "reimbursement_check").register(registry);
 		
-		
-
+		//metrics endpoint
 		app.get("/metrics", ctx->{
 			ctx.result(registry.scrape());
 			
@@ -48,11 +51,11 @@ public class RequestMapper {
 		
 		
 		
-		
+		//employe reimbursement submit endpoint
 		app.post("/api/requestSubmit", ctx ->{
 
 			boolean access = AuthenticateController.sessionCheck(ctx);
-	
+			//session control if its existing user can submit 
 			if(access) {
 				rController.requestSubmit(ctx);	
 				counter.increment(1);
@@ -63,12 +66,12 @@ public class RequestMapper {
 			
 			
 		} );
-		
+		// manger to see all pending reimbursements 
 		app.get("/api/reimbursments",ctx->{
 			
 			
 			boolean access = AuthenticateController.managerCheck(ctx);
-			
+			//If reimbursement not login can not see reimbursements
 			if(access) {
 				rController.allReimbursment(ctx);
 				counter1.increment(1);
@@ -76,24 +79,26 @@ public class RequestMapper {
 				ctx.status(HttpCode.FORBIDDEN);
 			}	
 		});
-		
+		//login endpoint for employee
 		app.post("/login", ctx->{
 			
 			AuthenticateController.authenticate(ctx);
 			counter2.increment(1);
 
 		});
+		//logout endpoint for employee
 		app.get("/logout", ctx->{
 			
 			AuthenticateController.logout(ctx);
 			
 		});
+		//session check endpoint for employee
 		app.get("/session/secret", ctx ->{
 			
 			AuthenticateController.sessionCheck(ctx);
 		});
 		
-		
+		//get reimbursement by name and status for employee
 		app.get("/reimbutsement/{username}/{status}", ctx->{
 			
 			
@@ -109,7 +114,7 @@ public class RequestMapper {
 			
 			
 		});
-		
+		//get reimbursement by username for employee
 		app.get("/reimbutsement/{username}", ctx->{
 			
 			boolean access = AuthenticateController.sessionCheck(ctx);
@@ -124,26 +129,26 @@ public class RequestMapper {
 			
 		});
 		
-		
+		//manager login endpoint
 		app.post("/mlogin", ctx -> {
 			
 			AuthenticateController.authenticateManager(ctx);
 
 		});
-		
+		//manager logout endpoint
 		app.get("/mlogout", ctx -> {
 			
 			AuthenticateController.logoutManager(ctx);
 
 		});
 		
-		
+		//manager get reimbursement by name and status
 		app.get("/manager/{username}/{status}", ctx->{
 			
 			
 			
 			boolean access = AuthenticateController.managerCheck(ctx);
-			
+			//if manager does not login it can not see the statement
 			if(access) {
 				rController.managerStatusCheck(ctx);
 			}else {
@@ -153,10 +158,11 @@ public class RequestMapper {
 			
 			
 		});
-		
+		//manager get reimbursement by name and status
 		app.get("/manager/{uniqname}", ctx->{
 			
 			boolean access = AuthenticateController.managerCheck(ctx);
+			//manager login requirement
 			if(access) {
 				rController.managerCheck(ctx);
 			}else {
@@ -166,7 +172,7 @@ public class RequestMapper {
 			
 		});
 		
-		
+		//manager reimbursement status update endpoint 
 		app.put("/api/paymentupdate", ctx ->{
 
 			boolean access = AuthenticateController.managerCheck(ctx);
@@ -181,7 +187,7 @@ public class RequestMapper {
 			
 		} );
 		
-		
+		//manager to see all reimbursement past and present
 		app.get("/api/reimbursments/all",ctx->{
 			
 			
@@ -193,7 +199,7 @@ public class RequestMapper {
 				ctx.status(HttpCode.FORBIDDEN);
 			}	
 		});
-		
+		//get all reimbursement past and present by name
 		app.get("/managerall/{uniqname}", ctx->{
 			
 			boolean access = AuthenticateController.managerCheck(ctx);

@@ -10,7 +10,7 @@ import io.javalin.http.Context;
 public class AuthenticateService {
 	
 	private static ReimbursmentDao rDao = new ReimbursmentDaoImpl();
-	
+	//User name check from Db
 	public static boolean authenticateUser(String username, String password) {
 		
 		User newUser = new User(-1, username, password);
@@ -20,6 +20,7 @@ public class AuthenticateService {
 		return access;
 		
 	}
+	//manager check from db
 	public static boolean authenticateManger(String username, String password) {
 		
 		Manager newManager = new Manager(username, password);

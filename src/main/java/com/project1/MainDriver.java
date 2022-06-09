@@ -23,9 +23,9 @@ public class MainDriver {
 	static int total=0;	
 	
 	public static void main(String[] args ) {
-		
+		//Prometheus registry for metrics
 		PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-		registry.config().commonTags("application","My-Frist-Monitored-App");
+		registry.config().commonTags("application","counter");
 		
 		new ClassLoaderMetrics().bindTo(registry);
 		new JvmMemoryMetrics().bindTo(registry);
@@ -34,8 +34,6 @@ public class MainDriver {
 		new UptimeMetrics().bindTo(registry);
 		new ProcessorMetrics().bindTo(registry);
 		new DiskSpaceMetrics(new File(System.getProperty("user.dir"))).bindTo(registry);
-		
-		Counter counter = Counter.builder("Path_request").description("track number").tag("purpose", "demo").register(registry);
 
 		Javalin app = Javalin.create(config -> {config.registerPlugin(new MicrometerPlugin(registry));}).start(7115);
 		
