@@ -1,0 +1,28 @@
+services:
+  app:
+    image: 'reimbursement_no_env'
+    container_name: reimbursement_pro_and_graf
+    ports:
+      - 7115:7115
+    environment:
+      - db_password=password
+      - db_url=jdbc:postgresql://database-1.cj7clghd6cph.us-east-1.rds.amazonaws.com:5432/postgres
+      - db_username=project1
+  prom:
+    image: 'prom/prometheus'
+    container_name: prom-container
+      #Specify the prometheus file in our host system and move it into the container!
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+
+      - 9090:9090
+
+  graf:
+
+    image: 'grafana/grafana'
+
+    ports:
+
+      - 8000:3000
+
